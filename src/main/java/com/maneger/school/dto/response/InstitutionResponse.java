@@ -4,13 +4,14 @@ import com.maneger.school.enums.TypeOfInstitution;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Builder
-public record InstitutionResponse(String nameInstitution,
+public record InstitutionResponse(UUID id,
+                                  String nameInstitution,
                                   String cnpj,
                                   String cellPhone,
                                   String email,
-                                  String userAccess,
                                   LocalDateTime creatAt,
                                   LocalDateTime uptdateAt,
                                   TypeOfInstitution typeOfInstitution,

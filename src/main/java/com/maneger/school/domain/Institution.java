@@ -2,6 +2,7 @@ package com.maneger.school.domain;
 
 import com.maneger.school.dto.request.InstitutionRequest;
 import com.maneger.school.enums.TypeOfInstitution;
+import com.maneger.school.enums.TypeUser;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.br.CNPJ;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -30,14 +32,15 @@ public class Institution {
     private String cellPhone;
     @Email
     private String email;
-    @Column(unique = true)
-    private String userAccess ;
-    private String passwordAccess;
     private LocalDateTime creatAt;
     private LocalDateTime uptdateAt;
     @Enumerated(EnumType.STRING)
     private TypeOfInstitution typeOfInstitution;
     private boolean status;
+
+
+    @OneToMany(mappedBy = "institution", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Student> students;
 
     @PrePersist
     public void prePersist(){
@@ -57,8 +60,6 @@ public class Institution {
         this.cellPhone = request.getCellPhone();
         this.cnpj = request.getCnpj();
         this.typeOfInstitution = request.getTypeOfInstitution();
-        this.userAccess = request.getUserAccess();
-        this.passwordAccess = request.getPasswordAccess();
     }
 
 }

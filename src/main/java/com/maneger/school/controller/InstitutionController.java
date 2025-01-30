@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/institution")
 @RequiredArgsConstructor
-
 public class InstitutionController {
 
     private final InstitutionService institutionService;
@@ -19,5 +18,11 @@ public class InstitutionController {
     @ResponseStatus(HttpStatus.CREATED)
     public InstitutionResponse save(@RequestBody InstitutionRequest request){
         return institutionService.saveInstitution(request);
+    }
+
+    @GetMapping("/{nameInstitution}")
+    @ResponseStatus(HttpStatus.OK)
+    public InstitutionResponse findByNameInstitution(@PathVariable String nameInstitution){
+        return institutionService.findByNameInstitution(nameInstitution);
     }
 }
