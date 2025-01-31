@@ -13,6 +13,7 @@ import org.hibernate.validator.constraints.br.CPF;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -23,11 +24,9 @@ import java.util.UUID;
 public class Student {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
     @CPF
-    @Column(unique = true)
     private String cpf;
+
     @Email
     @Column(unique = true)
     private String email;
@@ -49,9 +48,8 @@ public class Student {
     private String reasonsForBlockingDescription;
     private boolean status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "institution_id")
-    private Institution institution;
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<StudentInstitution> studentInstitutions;
 
     @PrePersist
     public void prePersist(){
@@ -59,7 +57,8 @@ public class Student {
         this.typeUser = TypeUser.Student;
         this.creatAt = LocalDateTime.now();
         this.uptdateAt = LocalDateTime.now();
-        this.age = Period.between(getDateOfBirth(), LocalDate.now()).getYears();    }
+        this.age = Period.between(getDateOfBirth(), LocalDate.now()).getYears();
+    }
 
     @PreUpdate
     public void preUpdate(){

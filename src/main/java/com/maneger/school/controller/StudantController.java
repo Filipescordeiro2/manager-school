@@ -51,11 +51,5 @@ public class StudantController {
         return service.findAll(pageable);
     }
 
-    @GetMapping("/{cpf}/{institutionId}")
-    @ResponseStatus(HttpStatus.OK)
-    public Optional<StudentResponse> findByCpfAndInstitutionId(@PathVariable String cpf, @PathVariable UUID institutionId){
-        return service.findByCpfAndInstitutionId(cpf, institutionId);
-    }
-
 
 }

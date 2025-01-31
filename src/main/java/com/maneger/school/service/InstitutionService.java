@@ -5,6 +5,7 @@ import com.maneger.school.dto.request.InstitutionRequest;
 import com.maneger.school.dto.response.InstitutionResponse;
 import com.maneger.school.exception.InstitutionException;
 import com.maneger.school.repository.InstitutionRepository;
+import com.maneger.school.util.InstitutionValidation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,24 +16,15 @@ import org.springframework.stereotype.Service;
 public class InstitutionService {
 
     private final InstitutionRepository repository;
+    private final InstitutionValidation validation;
 
     public InstitutionResponse saveInstitution(InstitutionRequest request) {
         log.info("Start of service [saveInstitution] -- Body request: " + request);
         try {
             var institution = new Institution(request);
+            validation.validateDuplicateInstitution(request.getNameInstitution());
             var institutionSaved = repository.save(institution);
-            var response = InstitutionResponse
-                    .builder()
-                    .id(institutionSaved.getId())
-                    .nameInstitution(institutionSaved.getNameInstitution())
-                    .cnpj(institutionSaved.getCnpj())
-                    .cellPhone(institutionSaved.getCellPhone())
-                    .email(institutionSaved.getEmail())
-                    .typeOfInstitution(institutionSaved.getTypeOfInstitution())
-                    .creatAt(institutionSaved.getCreatAt())
-                    .uptdateAt(institutionSaved.getUptdateAt())
-                    .status(institution.isStatus())
-                    .build();
+            var response = convertToInstitutionResponse(institutionSaved);
             log.info("Created Institution -- response: " + response);
             return response;
         } catch (Exception e) {
@@ -43,16 +35,19 @@ public class InstitutionService {
 
     public InstitutionResponse findByNameInstitution(String nameInstitution) {
         log.info("Start of service [findByNameInstitution] -- Name: " + nameInstitution);
-        var response = searchInstitution(nameInstitution);
+        return searchInstitutionFornameInstitution(nameInstitution);
+    }
+
+    private InstitutionResponse searchInstitutionFornameInstitution(String nameInstitution) {
+        var institution = repository.findByNameInstitution(nameInstitution)
+                .orElseThrow(() -> new InstitutionException("Error when searching " + nameInstitution));
+        var response = convertToInstitutionResponse(institution);
         log.info("Found Institution -- response: " + response);
         return response;
     }
 
-    private InstitutionResponse searchInstitution(String nameInstitution) {
-        log.info("Searching for Institution by name: " + nameInstitution);
-        var institution = repository.findByNameInstitution(nameInstitution)
-                .orElseThrow(() -> new InstitutionException("Error when searching " + nameInstitution));
-        var response = InstitutionResponse
+    private InstitutionResponse convertToInstitutionResponse(Institution institution) {
+        return InstitutionResponse
                 .builder()
                 .nameInstitution(institution.getNameInstitution())
                 .cnpj(institution.getCnpj())
@@ -63,8 +58,6 @@ public class InstitutionService {
                 .uptdateAt(institution.getUptdateAt())
                 .status(institution.isStatus())
                 .build();
-        log.info("Found Institution -- response: " + response);
-        return response;
     }
 
 

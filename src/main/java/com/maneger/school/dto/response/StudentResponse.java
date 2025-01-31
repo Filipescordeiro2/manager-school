@@ -6,6 +6,7 @@ import lombok.Builder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Builder
 public record StudentResponse(String cpf,
@@ -15,7 +16,6 @@ public record StudentResponse(String cpf,
                               String cellPhone,
                               LocalDate dateOfBirth,
                               TypeUser typeUser,
-                              String nomeInstitution,
                               LocalDateTime creatAt,
                               LocalDateTime uptdateAt,
                               String userAccess,

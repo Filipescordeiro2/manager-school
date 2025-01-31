@@ -2,7 +2,6 @@ package com.maneger.school.domain;
 
 import com.maneger.school.dto.request.InstitutionRequest;
 import com.maneger.school.enums.TypeOfInstitution;
-import com.maneger.school.enums.TypeUser;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
@@ -24,11 +23,10 @@ import java.util.UUID;
 public class Institution {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
-    private String nameInstitution;
     @CNPJ
     private String cnpj;
+
+    private String nameInstitution;
     private String cellPhone;
     @Email
     private String email;
@@ -38,9 +36,8 @@ public class Institution {
     private TypeOfInstitution typeOfInstitution;
     private boolean status;
 
-
     @OneToMany(mappedBy = "institution", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Student> students;
+    private List<StudentInstitution> studentInstitutions;
 
     @PrePersist
     public void prePersist(){
@@ -61,5 +58,4 @@ public class Institution {
         this.cnpj = request.getCnpj();
         this.typeOfInstitution = request.getTypeOfInstitution();
     }
-
 }

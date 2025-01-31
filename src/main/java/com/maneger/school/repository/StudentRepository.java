@@ -10,14 +10,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface StudentRepository extends JpaRepository<Student, UUID> {
+public interface StudentRepository extends JpaRepository<Student, String> {
     Optional<Student> findByUserAccessAndPasswordAccess(String userAccess, String passwordAccess);
     Optional<Student> findByUserAccess(String userAccess);
     Optional<Student> findByCpf(String cpf);
     Optional<Student> findByEmail(String email);
     Page<Student> findByStatusTrue(Pageable pageable);
-    Optional<Student> findByCpfAndInstitutionId(String cpf, UUID institutionId);
-
-
 
 }

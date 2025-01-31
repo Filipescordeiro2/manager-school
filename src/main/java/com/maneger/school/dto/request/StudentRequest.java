@@ -19,7 +19,5 @@ public class StudentRequest {
     private String userAccess;
     private String passwordAccess;
     private String cellPhone;
-    private UUID institutionId;
-
 
 }

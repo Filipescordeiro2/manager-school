@@ -7,8 +7,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Builder
-public record InstitutionResponse(UUID id,
-                                  String nameInstitution,
+public record InstitutionResponse(String nameInstitution,
                                   String cnpj,
                                   String cellPhone,
                                   String email,
