@@ -39,6 +39,10 @@ public class Institution {
     @OneToMany(mappedBy = "institution", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<StudentInstitution> studentInstitutions;
 
+    @OneToMany(mappedBy = "institution", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<TeacherSubject> teacherSubjects;
+
+
     @PrePersist
     public void prePersist(){
         this.status = true;

@@ -1,6 +1,6 @@
 package com.maneger.school.controller;
 
-import com.maneger.school.dto.request.LoginAlunoRequest;
+import com.maneger.school.dto.request.LoginRequest;
 import com.maneger.school.dto.request.StudentRequest;
 import com.maneger.school.dto.response.LoginAlunoResponse;
 import com.maneger.school.dto.response.StudentResponse;
@@ -10,9 +10,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/studant")
@@ -29,7 +26,7 @@ public class StudantController {
 
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
-    public LoginAlunoResponse login(@RequestBody LoginAlunoRequest request){
+    public LoginAlunoResponse login(@RequestBody LoginRequest request){
         return service.loginStudant(request);
     }
 

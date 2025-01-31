@@ -1,15 +1,13 @@
 package com.maneger.school.service;
 
-import com.maneger.school.domain.Institution;
 import com.maneger.school.domain.Student;
-import com.maneger.school.dto.request.LoginAlunoRequest;
+import com.maneger.school.dto.request.LoginRequest;
 import com.maneger.school.dto.request.StudentRequest;
 import com.maneger.school.dto.response.StudentResponse;
 import com.maneger.school.dto.response.LoginAlunoResponse;
 import com.maneger.school.enums.ReasonsForBlocking;
 import com.maneger.school.exception.LoginInstitutionException;
 import com.maneger.school.exception.StudantException;
-import com.maneger.school.repository.InstitutionRepository;
 import com.maneger.school.repository.StudentInstitutionRepository;
 import com.maneger.school.repository.StudentRepository;
 import com.maneger.school.util.StudantValidation;
@@ -27,7 +25,6 @@ public class StudentService {
 
     private final StudentRepository studentRepository;
     private final StudantValidation validation;
-    private final InstitutionRepository institutionRepository;
     private final StudentInstitutionRepository studentInstitutionRepository;
 
 
@@ -55,7 +52,7 @@ public class StudentService {
         return students.map(this::convertToStudentResponse);
     }
 
-    public LoginAlunoResponse loginStudant(LoginAlunoRequest request) {
+    public LoginAlunoResponse loginStudant(LoginRequest request) {
         log.info("Start of service [loginStudant] -- Body request: " + request);
         try {
             var studentEntity = studentRepository.findByUserAccessAndPasswordAccess(request.getUserAccess(), request.getPasswordAccess())
@@ -118,12 +115,8 @@ public class StudentService {
         return response;
     }
 
-    private Institution searchInstitution(String id){
-        return institutionRepository.findById(id)
-                .orElseThrow(() -> new StudantException("Institution not found"));
-    }
 
-    private void handleFailedLoginAttempt(LoginAlunoRequest request) {
+    private void handleFailedLoginAttempt(LoginRequest request) {
         var studant = studentRepository.findByUserAccess(request.getUserAccess())
                 .orElseThrow(() -> new LoginInstitutionException("User not found"));
         int attempts = studant.getLoginAttempts() + 1;

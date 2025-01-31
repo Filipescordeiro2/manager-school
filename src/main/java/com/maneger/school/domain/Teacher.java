@@ -1,6 +1,7 @@
 package com.maneger.school.domain;
 
 import com.maneger.school.dto.request.StudentRequest;
+import com.maneger.school.dto.request.TeacherRequest;
 import com.maneger.school.enums.ReasonsForBlocking;
 import com.maneger.school.enums.TypeUser;
 import jakarta.persistence.*;
@@ -16,22 +17,21 @@ import java.time.Period;
 import java.util.List;
 
 @Entity
-@Table(name = "studant")
-@NoArgsConstructor
-@AllArgsConstructor
+@Table(name = "teachers")
 @Data
-public class Student {
+@AllArgsConstructor
+@NoArgsConstructor
+public class Teacher {
 
     @Id
     @CPF
-    private String cpf;
+    private String teacherCpf;
 
+    private String nameTeacher;
+    private String surnameTeacher;
     @Email
-    @Column(unique = true)
     private String email;
-    private String nameStudent;
-    private String surnameStudent;
-    private String cellPhone;
+    private String cellFone;
     private LocalDate dateOfBirth;
     private int age;
     private LocalDateTime creatAt;
@@ -47,13 +47,13 @@ public class Student {
     private String reasonsForBlockingDescription;
     private boolean status;
 
-    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<StudentInstitution> studentInstitutions;
+    @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<TeacherSubject> teacherSubjects;
 
     @PrePersist
     public void prePersist(){
         this.status = true;
-        this.typeUser = TypeUser.Student;
+        this.typeUser = TypeUser.Teacher;
         this.creatAt = LocalDateTime.now();
         this.uptdateAt = LocalDateTime.now();
         this.age = Period.between(getDateOfBirth(), LocalDate.now()).getYears();
@@ -64,14 +64,16 @@ public class Student {
         this.uptdateAt = LocalDateTime.now();
     }
 
-    public Student(StudentRequest request){
-        this.nameStudent = request.getNameStudent();
-        this.surnameStudent = request.getSurnameStudent();
-        this.cellPhone = request.getCellPhone();
+    public Teacher(TeacherRequest request){
+        this.nameTeacher = request.getNameTeacher();
+        this.surnameTeacher = request.getSurnameTeacher();
+        this.cellFone = request.getCellFone();
         this.dateOfBirth = request.getDateOfBirth();
         this.userAccess = request.getUserAccess();
         this.passwordAccess = request.getPasswordAccess();
         this.email = request.getEmail();
-        this.cpf = request.getCpf();
+        this.teacherCpf = request.getTeacherCpf();
     }
+
 }
+
