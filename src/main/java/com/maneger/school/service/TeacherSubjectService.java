@@ -1,10 +1,7 @@
 package com.maneger.school.service;
 
-import com.maneger.school.domain.StudentInstitution;
 import com.maneger.school.domain.TeacherSubject;
-import com.maneger.school.dto.request.StudentInstitutionRequest;
 import com.maneger.school.dto.request.TeacherSubjectRequest;
-import com.maneger.school.dto.response.StudentInstitutionResponse;
 import com.maneger.school.dto.response.TeacherSubjectResponse;
 import com.maneger.school.exception.StudantException;
 import com.maneger.school.exception.TeacherException;
