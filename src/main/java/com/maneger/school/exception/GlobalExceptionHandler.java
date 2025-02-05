@@ -9,8 +9,8 @@ import org.springframework.web.context.request.WebRequest;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(LoginInstitutionException.class)
-    public ResponseEntity<?> handleLoginInstitutionException(LoginInstitutionException ex, WebRequest request) {
+    @ExceptionHandler(LoginException.class)
+    public ResponseEntity<?> handleLoginInstitutionException(LoginException ex, WebRequest request) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler(InstitutionException.class)

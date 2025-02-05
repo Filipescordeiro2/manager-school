@@ -6,7 +6,7 @@ import com.maneger.school.dto.request.TeacherRequest;
 import com.maneger.school.dto.response.LoginTeacherResponse;
 import com.maneger.school.dto.response.TeacherResponse;
 import com.maneger.school.enums.ReasonsForBlocking;
-import com.maneger.school.exception.LoginInstitutionException;
+import com.maneger.school.exception.LoginException;
 import com.maneger.school.exception.TeacherException;
 import com.maneger.school.repository.TeacherRepository;
 import com.maneger.school.utils.Utilitarias.TeacherUtils;
@@ -45,7 +45,7 @@ public class TeacherService {
         try {
             var teacherEntity = teacherUtils.findTeacherByCpf(request.getUserAccess());
             if (!teacherEntity.isStatus()) {
-                throw new LoginInstitutionException("The user is deactivated -- Reason: " + teacherEntity.getReasonsForBlockingDescription() + " -- Contact the Admin");
+                throw new LoginException("The user is deactivated -- Reason: " + teacherEntity.getReasonsForBlockingDescription() + " -- Contact the Admin");
             }
             teacherEntity.setLoginAttempts(0); // Reset login attempts on successful login
             teacherUtils.validateTeacher(teacherEntity);
@@ -57,10 +57,10 @@ public class TeacherService {
                     .build();
             log.info("Login successful -- response: " + response);
             return response;
-        } catch (LoginInstitutionException e) {
+        } catch (LoginException e) {
             log.error("Login failed: " + e.getMessage());
             teacherUtils.handleFailedLoginAttempt(request);
-            throw new LoginInstitutionException(e.getMessage());
+            throw new LoginException(e.getMessage());
         } catch (Exception e) {
             log.error("Error during login: " + e.getMessage());
             throw new RuntimeException("Error during Login " + e.getMessage());
