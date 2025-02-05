@@ -22,6 +22,11 @@ public class TeacherUtils {
         validation.validatePassword(teacher.getPasswordAccess());
     }
 
+    public Teacher findTeacherLogin(String userAccss,String password) {
+        return teacherRepository.findByUserAccessAndPasswordAccess(userAccss,password)
+                .orElseThrow(() -> new LoginException("User not found"));
+    }
+
     public Teacher findTeacherByCpf(String cpf) {
         return teacherRepository.findByTeacherCpf(cpf)
                 .orElseThrow(() -> new LoginException("User not found"));
