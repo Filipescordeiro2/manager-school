@@ -4,7 +4,7 @@ import com.maneger.school.domain.Teacher;
 import com.maneger.school.dto.request.LoginRequest;
 import com.maneger.school.dto.response.TeacherResponse;
 import com.maneger.school.enums.ReasonsForBlocking;
-import com.maneger.school.exception.LoginInstitutionException;
+import com.maneger.school.exception.LoginException;
 import com.maneger.school.repository.TeacherRepository;
 import com.maneger.school.utils.Validation.TeacherValidation;
 import lombok.RequiredArgsConstructor;
@@ -24,12 +24,12 @@ public class TeacherUtils {
 
     public Teacher findTeacherByCpf(String cpf) {
         return teacherRepository.findByTeacherCpf(cpf)
-                .orElseThrow(() -> new LoginInstitutionException("User not found"));
+                .orElseThrow(() -> new LoginException("User not found"));
     }
 
     public void handleFailedLoginAttempt(LoginRequest request) {
         var teacher = teacherRepository.findByUserAccess(request.getUserAccess())
-                .orElseThrow(() -> new LoginInstitutionException("User not found"));
+                .orElseThrow(() -> new LoginException("User not found"));
         int attempts = teacher.getLoginAttempts() + 1;
         if (attempts >= 3) {
             teacher.setStatus(false);
