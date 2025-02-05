@@ -4,16 +4,16 @@ import com.maneger.school.domain.StudentInstitution;
 import com.maneger.school.dto.request.StudentInstitutionRequest;
 import com.maneger.school.dto.response.StudentInstitutionResponse;
 import com.maneger.school.exception.StudantException;
+import com.maneger.school.exception.StudentInstitutionException;
 import com.maneger.school.repository.StudentInstitutionRepository;
 import com.maneger.school.repository.StudentRepository;
-import com.maneger.school.util.StudentInstitutionUtils;
+import com.maneger.school.utils.Utilitarias.StudentInstitutionUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class StudentInstitutionService {
-
 
     private final StudentInstitutionRepository studentInstitutionRepository;
     private final StudentRepository studentRepository;
@@ -25,10 +25,8 @@ public class StudentInstitutionService {
             var link = new StudentInstitution(request);
             var linkCreated = studentInstitutionRepository.save(link);
             return studentInstitutionUtils.convertToStudentResponse(linkCreated);
-        }catch (StudantException e){
-            throw  new StudantException(e.getMessage());
         }catch (Exception e){
-            throw new RuntimeException("Error for link");
+            throw new StudentInstitutionException("Error for link: "+e.getMessage());
         }
     }
 

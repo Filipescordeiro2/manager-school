@@ -4,12 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TeacherSubjectRequest {
+public class SchoolGradeRequest {
 
-    private String teacherCPF;
-    private String institutionCNPJ;
-    private String nameSchoolSubject;
+    private UUID teacherSubjectId;
+    private String schoolClassName;
+
 }

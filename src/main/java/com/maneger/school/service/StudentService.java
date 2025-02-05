@@ -10,7 +10,8 @@ import com.maneger.school.exception.LoginInstitutionException;
 import com.maneger.school.exception.StudantException;
 import com.maneger.school.repository.StudentInstitutionRepository;
 import com.maneger.school.repository.StudentRepository;
-import com.maneger.school.util.StudantValidation;
+import com.maneger.school.utils.Utilitarias.StudentUtils;
+import com.maneger.school.utils.Validation.StudantValidation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -26,16 +27,15 @@ public class StudentService {
     private final StudentRepository studentRepository;
     private final StudantValidation validation;
     private final StudentInstitutionRepository studentInstitutionRepository;
-
+    private final StudentUtils studentUtils;
 
     public StudentResponse saveStudant(StudentRequest request) {
         log.info("Start of service [saveStudant] -- Body request: " + request);
         try {
-            validation.validateDuplicateStudent(request.getCpf(), request.getUserAccess(), request.getEmail());
-            validation.validatePassword(request.getPasswordAccess());
             var student = new Student(request);
+            validation.validateStudent(student);
             var studentSaved = studentRepository.save(student);
-            var response = convertToStudentResponse(studentSaved);
+            var response = studentUtils.convertToStudentResponse(studentSaved);
             log.info("Created Studant -- response: " + response);
             return response;
         } catch (StudantException e) {
@@ -47,105 +47,63 @@ public class StudentService {
         }
     }
 
-    public Page<StudentResponse>findAll(Pageable pageable){
+    public Page<StudentResponse> findAll(Pageable pageable) {
         var students = studentRepository.findByStatusTrue(pageable);
-        return students.map(this::convertToStudentResponse);
+        return students.map(studentUtils::convertToStudentResponse);
     }
 
     public LoginAlunoResponse loginStudant(LoginRequest request) {
         log.info("Start of service [loginStudant] -- Body request: " + request);
         try {
-            var studentEntity = studentRepository.findByUserAccessAndPasswordAccess(request.getUserAccess(), request.getPasswordAccess())
-                    .orElseThrow(() -> new LoginInstitutionException("User or Password is incorrect"));
-            if (!studentEntity.isStatus()) {
-                throw new LoginInstitutionException("The user is deactivated -- Reason: "+studentEntity.getReasonsForBlockingDescription()+" -- Contact the Admin");
-            }
-            studentEntity.setLoginAttempts(0); // Reset login attempts on successful login
-            studentRepository.save(studentEntity); // Save the updated student
-            var studant = convertToStudentResponse(studentEntity);
-            var response = LoginAlunoResponse
-                    .builder()
-                    .message("Login successfully")
-                    .alunoResponse(studant)
-                    .build();
+            var response = studentUtils.authenticateAndBuildResponse(request);
             log.info("Login successful -- response: " + response);
             return response;
         } catch (LoginInstitutionException e) {
             log.error("Login failed: " + e.getMessage());
-            handleFailedLoginAttempt(request);
+            studentUtils.handleFailedLoginAttempt(request);
             throw new LoginInstitutionException(e.getMessage());
         } catch (Exception e) {
             log.error("Error during login: " + e.getMessage());
-            throw new RuntimeException("Error Login " + e.getMessage());
+            throw new RuntimeException("Error Login: " + e.getMessage());
         }
     }
 
-    public StudentResponse ActivateAcessStudant(String cpf){
-        var studant = studentRepository.findByCpf(cpf)
-                .orElseThrow(()->new LoginInstitutionException("User not found"));
-        if (!studant.isStatus()){
-            studant.setStatus(true);
-            studant.setReasonsForBlocking(null);
-            studant.setReasonsForBlockingDescription(null);
-            studant.setLoginAttempts(0);
-            log.info("Access enabled");
+    public StudentResponse ActivateAcessStudant(String cpf) {
+        try{
+            var studant = studentUtils.findStudentByCpf(cpf);
+            if (!studant.isStatus()) {
+                studant.setStatus(true);
+                studant.setReasonsForBlocking(null);
+                studant.setReasonsForBlockingDescription(null);
+                studant.setLoginAttempts(0);
+                log.info("Access enabled");
+            }
+            studentRepository.save(studant);
+            return studentUtils.convertToStudentResponse(studant);
+        }catch (Exception e){
+            throw new StudantException("Error in activate Studant: "+e.getMessage());
         }
-        studentRepository.save(studant);
-        var response = convertToStudentResponse(studant);
-        return response;
     }
 
     public StudentResponse DisabledAcessStudant(String cpf) {
-        var studant = studentRepository.findByCpf(cpf)
-                .orElseThrow(() -> new LoginInstitutionException("User not found"));
-        var linkstudants = studentInstitutionRepository.findByStudent(studant);
-        if (studant.isStatus()) {
-            studant.setStatus(false);
-            studant.setReasonsForBlocking(ReasonsForBlocking.BLOCKED_2);
-            studant.setReasonsForBlockingDescription(ReasonsForBlocking.BLOCKED_2.getDescription());
-            studant.setLoginAttempts(0);
-            log.info("Disabled Student Access");
-            linkstudants.forEach(linkstudant -> {
-                linkstudant.setRegistration(false);
-                studentInstitutionRepository.save(linkstudant);
-            });
+        try{
+            var studant = studentUtils.findStudentByCpf(cpf);
+            var linkstudants = studentInstitutionRepository.findByStudent(studant);
+            if (studant.isStatus()) {
+                studant.setStatus(false);
+                studant.setReasonsForBlocking(ReasonsForBlocking.BLOCKED_2);
+                studant.setReasonsForBlockingDescription(ReasonsForBlocking.BLOCKED_2.getDescription());
+                studant.setLoginAttempts(0);
+                log.info("Disabled Student Access");
+                linkstudants.forEach(linkstudant -> {
+                    linkstudant.setRegistration(false);
+                    studentInstitutionRepository.save(linkstudant);
+                });
+            }
+            studentRepository.save(studant);
+            return studentUtils.convertToStudentResponse(studant);
+        }catch (Exception e){
+            throw new StudantException("Error in Disabled for Student"+e.getMessage());
         }
-        studentRepository.save(studant);
-        var response = convertToStudentResponse(studant);
-        return response;
-    }
-
-
-    private void handleFailedLoginAttempt(LoginRequest request) {
-        var studant = studentRepository.findByUserAccess(request.getUserAccess())
-                .orElseThrow(() -> new LoginInstitutionException("User not found"));
-        int attempts = studant.getLoginAttempts() + 1;
-        if (attempts >= 3) {
-            studant.setStatus(false);
-            studant.setReasonsForBlocking(ReasonsForBlocking.BLOCKED_1);
-            studant.setReasonsForBlockingDescription(ReasonsForBlocking.BLOCKED_1.getDescription());
-            log.warn(studant.getReasonsForBlockingDescription());
-        }
-        studant.setLoginAttempts(attempts);
-        studentRepository.save(studant);
-    }
-
-    private StudentResponse convertToStudentResponse(Student studentEntity) {
-        return StudentResponse
-                .builder()
-                .nameStudent(studentEntity.getNameStudent())
-                .cpf(studentEntity.getCpf())
-                .cellPhone(studentEntity.getCellPhone())
-                .email(studentEntity.getEmail())
-                .typeUser(studentEntity.getTypeUser())
-                .creatAt(studentEntity.getCreatAt())
-                .uptdateAt(studentEntity.getUptdateAt())
-                .status(studentEntity.isStatus())
-                .dateOfBirth(studentEntity.getDateOfBirth())
-                .surnameStudent(studentEntity.getSurnameStudent())
-                .userAccess(studentEntity.getUserAccess())
-                .reasonsForBlocking(studentEntity.getReasonsForBlocking())
-                .reasonsForBlockingDescription(studentEntity.getReasonsForBlockingDescription())
-                .build();
     }
 }

@@ -1,6 +1,5 @@
 package com.maneger.school.domain;
 
-
 import com.maneger.school.dto.request.StudentInstitutionRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -26,8 +25,9 @@ public class StudentInstitution {
     private Student student;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "institution_cnpj")
+    @JoinColumn(name = "institution_cnpj", referencedColumnName = "cnpj")
     private Institution institution;
+
     private LocalDateTime startDate;
     private LocalDateTime uptdateAt;
     private String course;

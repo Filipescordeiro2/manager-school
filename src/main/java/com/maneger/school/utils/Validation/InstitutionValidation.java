@@ -1,4 +1,4 @@
-package com.maneger.school.util;
+package com.maneger.school.utils.Validation;
 
 import com.maneger.school.exception.StudantException;
 import com.maneger.school.repository.InstitutionRepository;
@@ -11,11 +11,10 @@ public class InstitutionValidation {
 
     private final InstitutionRepository repository;
 
-    public void validateDuplicateInstitution(String nameInstitution) {
-        var instituition = repository.findByNameInstitution(nameInstitution);
+    public void validateDuplicateInstitution(String nameInstitution) throws InstantiationException {
+        var instituition = repository.findByNameInstitutionIgnoreCase(nameInstitution);
         if (instituition.isPresent()) {
-            throw new StudantException("There is already a registration for this nameInstitution");
+            throw new InstantiationException("There is already a registration for this nameInstitution");
         }
-
     }
 }

@@ -5,9 +5,11 @@ import com.maneger.school.dto.request.TeacherSubjectRequest;
 import com.maneger.school.dto.response.TeacherSubjectResponse;
 import com.maneger.school.exception.StudantException;
 import com.maneger.school.exception.TeacherException;
+import com.maneger.school.repository.InstitutionRepository;
+import com.maneger.school.repository.SchoolSubjectRepository;
 import com.maneger.school.repository.TeacherRepository;
 import com.maneger.school.repository.TeacherSubjectRepository;
-import com.maneger.school.util.TeacherSubjectUtils;
+import com.maneger.school.utils.Utilitarias.TeacherSubjectUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,8 @@ public class TeacherSubjectService {
     private final TeacherSubjectRepository teacherSubjectRepository;
     private final TeacherRepository teacherRepository;
     private final TeacherSubjectUtils teacherSubjectUtils;
+    private final InstitutionRepository institutionRepository;
+    private final SchoolSubjectRepository schoolSubjectRepository;
 
     public TeacherSubjectResponse createLink(TeacherSubjectRequest request){
         try{

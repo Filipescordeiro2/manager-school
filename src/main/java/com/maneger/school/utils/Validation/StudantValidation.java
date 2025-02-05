@@ -1,5 +1,6 @@
-package com.maneger.school.util;
+package com.maneger.school.utils.Validation;
 
+import com.maneger.school.domain.Student;
 import com.maneger.school.exception.StudantException;
 import com.maneger.school.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,11 @@ import java.util.regex.Pattern;
 public class StudantValidation {
 
     private final StudentRepository repository;
+
+    public void validateStudent(Student student) {
+        validateDuplicateStudent(student.getCpf(), student.getUserAccess(), student.getEmail());
+        validatePassword(student.getPasswordAccess());
+    }
 
     public void validateDuplicateStudent(String cpf, String userAccess, String email) {
         var studentByCpf = repository.findByCpf(cpf);

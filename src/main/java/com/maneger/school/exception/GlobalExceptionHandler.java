@@ -17,6 +17,24 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleInstitutionException(InstitutionException ex, WebRequest request) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(SchoolClassException.class)
+    public ResponseEntity<?> handleSchoolClassException(SchoolClassException ex, WebRequest request) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(SchoolGradeException.class)
+    public ResponseEntity<?> handleSchoolGradeException(SchoolGradeException ex, WebRequest request) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(StudentInstitutionException.class)
+    public ResponseEntity<?> handleStudentInstitutionException(StudentInstitutionException ex, WebRequest request) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(SchoolSubjectException.class)
+    public ResponseEntity<?> handleSchoolSubjectException(SchoolSubjectException ex, WebRequest request) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 
     @ExceptionHandler(TeacherException.class)
     public ResponseEntity<?> handleTeacherException(TeacherException ex, WebRequest request) {

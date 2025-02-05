@@ -14,8 +14,6 @@ public class InstitutionRequest {
     private String cnpj;
     private String cellPhone;
     private String email;
-    private String userAccess ;
-    private String passwordAccess;
     private TypeOfInstitution typeOfInstitution;
 
 }

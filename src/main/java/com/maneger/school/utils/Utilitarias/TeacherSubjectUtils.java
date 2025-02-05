@@ -1,4 +1,4 @@
-package com.maneger.school.util;
+package com.maneger.school.utils.Utilitarias;
 
 import com.maneger.school.domain.*;
 import com.maneger.school.dto.response.*;

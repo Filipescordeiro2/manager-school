@@ -4,12 +4,17 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TeacherSubjectRequest {
+public class SchoolClassRequest {
 
-    private String teacherCPF;
+    private String nameClass;
+    private String dradeOfSchedules;
+    private String period;
+    private String startTime;
+    private String endTime;
     private String institutionCNPJ;
-    private String nameSchoolSubject;
+
 }

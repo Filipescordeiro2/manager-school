@@ -1,4 +1,4 @@
-package com.maneger.school.util;
+package com.maneger.school.utils.Validation;
 
 import com.maneger.school.exception.TeacherException;
 import com.maneger.school.repository.TeacherRepository;

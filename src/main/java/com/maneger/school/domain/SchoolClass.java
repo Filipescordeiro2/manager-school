@@ -1,5 +1,6 @@
 package com.maneger.school.domain;
 
+import com.maneger.school.dto.request.SchoolClassRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @AllArgsConstructor
@@ -17,16 +17,23 @@ import java.util.UUID;
 public class SchoolClass {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    private String nameClass;
 
-   // private List<Teacher> teachers;
-    //private List<SchoolSubject>schoolSubjects;
+    @OneToOne
+    @JoinColumn(name = "institution_cnpj", referencedColumnName = "cnpj")
+    private Institution institution;
+
+    private String dradeOfSchedules;
+    private String period;
+    private String startTime;
+    private String endTime;
 
     private LocalDateTime createAt;
     private LocalDateTime updateAt;
     private boolean status;
 
+    @OneToMany(mappedBy = "schoolClass", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<SchoolGrade> schoolGrades;
 
     @PrePersist
     public void prePersist(){
@@ -40,5 +47,14 @@ public class SchoolClass {
         this.updateAt = LocalDateTime.now();
     }
 
+    public SchoolClass(SchoolClassRequest request){
+        this.nameClass = request.getNameClass();
+        this.dradeOfSchedules = request.getDradeOfSchedules();
+        this.period = request.getPeriod();
+        this.startTime = request.getStartTime();
+        this.endTime = request.getEndTime();
 
+        this.institution = new Institution();
+        this.institution.setCnpj(request.getInstitutionCNPJ());
+    }
 }
