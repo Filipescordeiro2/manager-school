@@ -5,24 +5,26 @@ import com.maneger.school.dto.request.LoginRequest;
 import com.maneger.school.dto.response.LoginAlunoResponse;
 import com.maneger.school.dto.response.StudentResponse;
 import com.maneger.school.enums.ReasonsForBlocking;
-import com.maneger.school.exception.LoginInstitutionException;
-import com.maneger.school.repository.StudentInstitutionRepository;
+import com.maneger.school.exception.LoginException;
 import com.maneger.school.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class StudentUtils {
 
     private final StudentRepository studentRepository;
 
     public LoginAlunoResponse authenticateAndBuildResponse(LoginRequest request) {
         var studentEntity = studentRepository.findByUserAccessAndPasswordAccess(request.getUserAccess(), request.getPasswordAccess())
-                .orElseThrow(() -> new LoginInstitutionException("User or Password is incorrect"));
+                .orElseThrow(() -> new LoginException("User or Password is incorrect"));
 
         if (!studentEntity.isStatus()) {
-            throw new LoginInstitutionException("The user is deactivated -- Reason: " + studentEntity.getReasonsForBlockingDescription() + " -- Contact the Admin");
+            log.error("The user is deactivated -- Reason: " + studentEntity.getReasonsForBlockingDescription() + " -- Contact the Admin");
+            throw new LoginException("User blocked 3 attempts");
         }
 
         studentEntity.setLoginAttempts(0);
@@ -37,12 +39,12 @@ public class StudentUtils {
 
     public Student findStudentByCpf(String cpf) {
         return studentRepository.findByCpf(cpf)
-                .orElseThrow(() -> new LoginInstitutionException("User not found"));
+                .orElseThrow(() -> new LoginException("User not found"));
     }
 
     public void handleFailedLoginAttempt(LoginRequest request) {
         var student = studentRepository.findByUserAccess(request.getUserAccess())
-                .orElseThrow(() -> new LoginInstitutionException("User not found"));
+                .orElseThrow(() -> new LoginException("Username or password is incorrect"));
         int attempts = student.getLoginAttempts() + 1;
         if (attempts >= 3) {
             student.setStatus(false);

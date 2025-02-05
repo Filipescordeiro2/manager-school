@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/studant")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000") // Permitir chamadas apenas do frontend
 public class StudantController {
 
     private final StudentService service;

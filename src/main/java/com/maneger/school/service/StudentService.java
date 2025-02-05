@@ -6,7 +6,7 @@ import com.maneger.school.dto.request.StudentRequest;
 import com.maneger.school.dto.response.StudentResponse;
 import com.maneger.school.dto.response.LoginAlunoResponse;
 import com.maneger.school.enums.ReasonsForBlocking;
-import com.maneger.school.exception.LoginInstitutionException;
+import com.maneger.school.exception.LoginException;
 import com.maneger.school.exception.StudantException;
 import com.maneger.school.repository.StudentInstitutionRepository;
 import com.maneger.school.repository.StudentRepository;
@@ -58,10 +58,10 @@ public class StudentService {
             var response = studentUtils.authenticateAndBuildResponse(request);
             log.info("Login successful -- response: " + response);
             return response;
-        } catch (LoginInstitutionException e) {
+        } catch (LoginException e) {
             log.error("Login failed: " + e.getMessage());
             studentUtils.handleFailedLoginAttempt(request);
-            throw new LoginInstitutionException(e.getMessage());
+            throw new LoginException(e.getMessage());
         } catch (Exception e) {
             log.error("Error during login: " + e.getMessage());
             throw new RuntimeException("Error Login: " + e.getMessage());
