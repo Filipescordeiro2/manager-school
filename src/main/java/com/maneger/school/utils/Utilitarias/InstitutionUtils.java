@@ -15,16 +15,15 @@ import org.springframework.stereotype.Component;
 public class InstitutionUtils {
 
     private final InstitutionRepository repository;
-    private final InstitutionValidation validation;
-
-    public void validateAndSaveInstitution(Institution institution) throws InstantiationException {
-        validation.validateDuplicateInstitution(institution.getNameInstitution());
-        repository.save(institution);
-    }
 
     public Institution findInstitutionByName(String nameInstitution) {
         return repository.findByNameInstitutionIgnoreCase(nameInstitution)
                 .orElseThrow(() -> new InstitutionException("institution not found: " + nameInstitution));
+    }
+
+    public Institution findInstitutionCnpj(String cnpj) {
+        return repository.findById(cnpj)
+                .orElseThrow(() -> new InstitutionException("institution not found: " + cnpj));
     }
 
     public InstitutionResponse convertToInstitutionResponse(Institution institution) {

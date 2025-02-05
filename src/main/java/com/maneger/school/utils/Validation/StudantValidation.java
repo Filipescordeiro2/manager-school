@@ -1,6 +1,7 @@
 package com.maneger.school.utils.Validation;
 
 import com.maneger.school.domain.Student;
+import com.maneger.school.exception.InstitutionException;
 import com.maneger.school.exception.StudantException;
 import com.maneger.school.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,13 @@ public class StudantValidation {
         validatePassword(student.getPasswordAccess());
     }
 
-    public void validateDuplicateStudent(String cpf, String userAccess, String email) {
+    public void validStatusForDisanble(boolean status){
+        if (!status){
+            throw new StudantException("Student is already deactivated");
+        }
+    }
+
+    private void validateDuplicateStudent(String cpf, String userAccess, String email) {
         var studentByCpf = repository.findByCpf(cpf);
         if (studentByCpf.isPresent()) {
             throw new StudantException("There is already a registration for this CPF");
@@ -36,7 +43,7 @@ public class StudantValidation {
         }
     }
 
-    public void validatePassword(String password) {
+    private void validatePassword(String password) {
         if (password.length() < 8) {
             throw new StudantException("Password must be at least 8 characters long");
         }

@@ -89,6 +89,7 @@ public class StudentService {
         try{
             var studant = studentUtils.findStudentByCpf(cpf);
             var linkstudants = studentInstitutionRepository.findByStudent(studant);
+            validation.validStatusForDisanble(studant.isStatus());
             if (studant.isStatus()) {
                 studant.setStatus(false);
                 studant.setReasonsForBlocking(ReasonsForBlocking.BLOCKED_2);
@@ -103,7 +104,7 @@ public class StudentService {
             studentRepository.save(studant);
             return studentUtils.convertToStudentResponse(studant);
         }catch (Exception e){
-            throw new StudantException("Error in Disabled for Student"+e.getMessage());
+            throw new StudantException("Error in Disabled for Student: "+e.getMessage());
         }
     }
 }

@@ -2,6 +2,7 @@ package com.maneger.school.controller;
 
 import com.maneger.school.dto.request.InstitutionRequest;
 import com.maneger.school.dto.response.InstitutionResponse;
+import com.maneger.school.dto.response.StudentResponse;
 import com.maneger.school.service.InstitutionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,5 +25,11 @@ public class InstitutionController {
     @ResponseStatus(HttpStatus.OK)
     public InstitutionResponse findByNameInstitution(@PathVariable String nameInstitution){
         return institutionService.findByNameInstitution(nameInstitution);
+    }
+
+    @PostMapping("/disabled/{cnpj}")
+    @ResponseStatus(HttpStatus.OK)
+    public InstitutionResponse DisabledAcessIntitution(@PathVariable String cnpj){
+        return institutionService.DisabledAcessIntitution(cnpj);
     }
 }
