@@ -13,5 +13,5 @@ public record SchoolClassResponse(String nameClass,
                                   LocalDateTime createAt,
                                   LocalDateTime updateAt,
                                   boolean status,
-                                  InstitutionResponse institutionResponse) {
+                                  String institutionCnpj) {
 }

@@ -6,8 +6,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Builder
-public record StudentInstitutionResponse(StudentResponse studentResponse,
-                                         List<InstitutionResponse>institutionResponses,
+public record StudentInstitutionResponse(String studentCpf,
+                                         String institutionCnpj,
                                          LocalDateTime startDate,
                                          LocalDateTime uptdateAt,
                                          String course,

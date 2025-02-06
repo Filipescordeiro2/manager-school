@@ -8,9 +8,9 @@ import java.time.LocalDateTime;
 
 @Builder
 public record TeacherSubjectResponse(String message,
-                                     TeacherResponse teacherResponse,
-                                     InstitutionResponse institutionResponses,
-                                     SchoolSubjectResponse schoolSubjectResponse,
+                                     String teacherCpf,
+                                     String institutionCnpj,
+                                     String schoolSubjectName,
                                      LocalDateTime startDate,
                                      LocalDateTime uptdateAt,
                                      boolean bond) {

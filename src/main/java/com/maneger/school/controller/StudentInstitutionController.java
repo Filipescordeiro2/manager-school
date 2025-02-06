@@ -20,9 +20,5 @@ public class StudentInstitutionController {
     public StudentInstitutionResponse createLink(@RequestBody StudentInstitutionRequest request){
         return studentInstitutionService.createLink(request);
     }
-    @GetMapping("/consulta/{cpf}")
-    public ResponseEntity<StudentInstitutionResponse> getStudentInstitutions(@PathVariable String cpf) {
-        var response = studentInstitutionService.findAllStudentInstitution(cpf);
-        return ResponseEntity.ok(response);
-    }
+
 }
