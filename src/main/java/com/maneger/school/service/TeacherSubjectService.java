@@ -28,7 +28,7 @@ public class TeacherSubjectService {
             validStatus(request.getTeacherCPF());
             var link = new TeacherSubject(request);
             var linkCreated = teacherSubjectRepository.save(link);
-            return teacherSubjectUtils.convertTeacherSubjectResponse(linkCreated);
+            return teacherSubjectUtils.convertToTeacherSubjectResponse(linkCreated);
         }catch (StudantException e){
             throw  new TeacherException(e.getMessage());
         }catch (Exception e){

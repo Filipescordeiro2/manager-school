@@ -21,7 +21,7 @@ public class SchoolClassService {
         try {
             var schoolClass = new SchoolClass(request);
             var schoolClassSaved = repository.save(schoolClass);
-            return utils.convertTeacherSubjectResponse(schoolClassSaved);
+            return utils.ConvertSchoolClassResponse(schoolClassSaved);
         }catch (Exception e){
             throw  new SchoolClassException("Error in saved School Class: "+e.getMessage());
         }
