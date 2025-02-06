@@ -5,6 +5,7 @@ import com.maneger.school.dto.response.StudentInstitutionResponse;
 import com.maneger.school.service.StudentInstitutionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,5 +19,10 @@ public class StudentInstitutionController {
     @ResponseStatus(HttpStatus.CREATED)
     public StudentInstitutionResponse createLink(@RequestBody StudentInstitutionRequest request){
         return studentInstitutionService.createLink(request);
+    }
+    @GetMapping("/consulta/{cpf}")
+    public ResponseEntity<StudentInstitutionResponse> getStudentInstitutions(@PathVariable String cpf) {
+        var response = studentInstitutionService.findAllStudentInstitution(cpf);
+        return ResponseEntity.ok(response);
     }
 }

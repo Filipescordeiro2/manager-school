@@ -30,6 +30,32 @@ public class StudentInstitutionService {
         }
     }
 
+    public StudentInstitutionResponse findAllStudentInstitution(String cpf) {
+        var student = studentRepository.findById(cpf)
+                .orElseThrow(() -> new StudentInstitutionException("Student not found"));
+
+        var studentInstitutions = studentInstitutionRepository.findByStudent(student);
+
+        if (studentInstitutions.isEmpty()) {
+            throw new StudentInstitutionException("No institutions found for the student");
+        }
+        var responseStudent = studentInstitutionUtils.buildStudentResponse(student);
+
+        var institutionResponses = studentInstitutions.stream()
+                .map(si -> studentInstitutionUtils.buildInstitutionResponse(si.getInstitution()))
+                .toList();
+
+        return StudentInstitutionResponse.builder()
+                .studentResponse(responseStudent)
+                .institutionResponses(institutionResponses)
+                .startDate(studentInstitutions.get(0).getStartDate()) // Pegando a data do primeiro vínculo
+                .uptdateAt(studentInstitutions.get(0).getUptdateAt()) // Pegando a última atualização do primeiro vínculo
+                .course(studentInstitutions.stream().map(StudentInstitution::getCourse).findFirst().orElse(null)) // Pegando o curso do primeiro vínculo
+                .status(studentInstitutions.stream().anyMatch(StudentInstitution::isRegistration)) // Definindo status com base nos registros ativos
+                .build();
+    }
+
+
     private void validStatus(String cpf){
       var student =  studentRepository.findByCpf(cpf).orElseThrow(()->new RuntimeException("Student not Found"));
       if (!student.isStatus()){
