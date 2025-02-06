@@ -15,37 +15,12 @@ import org.springframework.stereotype.Service;
 public class SchoolClassUtils {
 
     private final SchoolClassRepository repository;
-    private final InstitutionRepository institutionRepository;
 
 
-    public SchoolClassResponse convertTeacherSubjectResponse(SchoolClass schoolClass) {
-        var institution = findInstitutionById(schoolClass.getInstitution().getCnpj());
-        var responseInstitution = buildInstitutionResponse(institution);
-        return buildSchoolClassResponse(schoolClass,responseInstitution);
-    }
-
-    private Institution findInstitutionById(String institutionId) {
-        return institutionRepository.findById(institutionId)
-                .orElseThrow(() -> new InstitutionException("Institution Not Found"));
-    }
-    private InstitutionResponse buildInstitutionResponse(Institution institution) {
-        return InstitutionResponse.builder()
-                .nameInstitution(institution.getNameInstitution())
-                .cnpj(institution.getCnpj())
-                .cellPhone(institution.getCellPhone())
-                .email(institution.getEmail())
-                .typeOfInstitution(institution.getTypeOfInstitution())
-                .creatAt(institution.getCreatAt())
-                .uptdateAt(institution.getUptdateAt())
-                .status(institution.isStatus())
-                .build();
-    }
-
-    private SchoolClassResponse buildSchoolClassResponse(SchoolClass schoolClass,
-                                                                   InstitutionResponse responseInstitution) {
+    public SchoolClassResponse ConvertSchoolClassResponse(SchoolClass schoolClass) {
         return SchoolClassResponse.builder()
                 .nameClass(schoolClass.getNameClass())
-                .institutionResponse(responseInstitution)
+                .institutionCnpj(schoolClass.getInstitution().getCnpj())
                 .createAt(schoolClass.getCreateAt())
                 .updateAt(schoolClass.getUpdateAt())
                 .dradeOfSchedules(schoolClass.getDradeOfSchedules())

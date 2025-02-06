@@ -43,12 +43,12 @@ public class TeacherService {
     public LoginTeacherResponse loginteacher(LoginRequest request) {
         log.info("Start of service [loginteacher] -- Body request: " + request);
         try {
-            var teacherEntity = teacherUtils.findTeacherByCpf(request.getUserAccess());
+            var teacherEntity = teacherUtils.findTeacherLogin(request.getUserAccess(),request.getPasswordAccess());
             if (!teacherEntity.isStatus()) {
-                throw new LoginException("The user is deactivated -- Reason: " + teacherEntity.getReasonsForBlockingDescription() + " -- Contact the Admin");
+                log.error("The user is deactivated -- Reason: " + teacherEntity.getReasonsForBlockingDescription() + " -- Contact the Admin");
+                throw new LoginException("User blocked");
             }
             teacherEntity.setLoginAttempts(0); // Reset login attempts on successful login
-            teacherUtils.validateTeacher(teacherEntity);
             var teacherSaved= teacherRepository.save(teacherEntity);
             var teacher = teacherUtils.convertToTeacherResponse(teacherSaved);
             var response = LoginTeacherResponse.builder()
@@ -77,7 +77,6 @@ public class TeacherService {
                 teacher.setLoginAttempts(0);
                 log.info("Access enabled");
             }
-            teacherUtils.validateTeacher(teacher);
             var teacherSaved = teacherRepository.save(teacher);
             return teacherUtils.convertToTeacherResponse(teacherSaved);
         }catch (Exception e){
@@ -95,7 +94,6 @@ public class TeacherService {
                 teacher.setLoginAttempts(0);
                 log.info("Disabled Teacher Access");
             }
-            teacherUtils.validateTeacher(teacher);
             var teacherSaved = teacherRepository.save(teacher);
             return teacherUtils.convertToTeacherResponse(teacherSaved);
 

@@ -10,6 +10,8 @@ import java.util.UUID;
 @Repository
 public interface InstitutionRepository extends JpaRepository<Institution, String> {
     Optional<Institution> findByNameInstitutionIgnoreCase(String nameInstitution);
+    Optional<Institution> findByCnpj(String cnpj);
+
 
 
 }

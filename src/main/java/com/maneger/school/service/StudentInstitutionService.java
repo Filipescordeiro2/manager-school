@@ -24,7 +24,7 @@ public class StudentInstitutionService {
             validStatus(request.getStudentCPF());
             var link = new StudentInstitution(request);
             var linkCreated = studentInstitutionRepository.save(link);
-            return studentInstitutionUtils.convertToStudentResponse(linkCreated);
+            return studentInstitutionUtils.ConvertStudentInstitutionResponse(linkCreated);
         }catch (Exception e){
             throw new StudentInstitutionException("Error for link: "+e.getMessage());
         }

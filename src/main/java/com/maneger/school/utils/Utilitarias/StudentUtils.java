@@ -24,7 +24,7 @@ public class StudentUtils {
 
         if (!studentEntity.isStatus()) {
             log.error("The user is deactivated -- Reason: " + studentEntity.getReasonsForBlockingDescription() + " -- Contact the Admin");
-            throw new LoginException("User blocked 3 attempts");
+            throw new LoginException("User blocked");
         }
 
         studentEntity.setLoginAttempts(0);

@@ -5,6 +5,7 @@ import com.maneger.school.dto.response.StudentInstitutionResponse;
 import com.maneger.school.service.StudentInstitutionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,4 +20,5 @@ public class StudentInstitutionController {
     public StudentInstitutionResponse createLink(@RequestBody StudentInstitutionRequest request){
         return studentInstitutionService.createLink(request);
     }
+
 }
