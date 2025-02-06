@@ -41,7 +41,7 @@ public class StudentInstitutionUtils {
                 .orElseThrow(() -> new InstitutionException("Institution Not Found"));
     }
 
-    private InstitutionResponse buildInstitutionResponse(Institution institution) {
+    public InstitutionResponse buildInstitutionResponse(Institution institution) {
         return InstitutionResponse.builder()
                 .nameInstitution(institution.getNameInstitution())
                 .cnpj(institution.getCnpj())
@@ -54,7 +54,7 @@ public class StudentInstitutionUtils {
                 .build();
     }
 
-    private StudentResponse buildStudentResponse(Student student) {
+    public StudentResponse buildStudentResponse(Student student) {
         return StudentResponse.builder()
                 .nameStudent(student.getNameStudent())
                 .cpf(student.getCpf())
@@ -72,7 +72,7 @@ public class StudentInstitutionUtils {
                 .build();
     }
 
-    private StudentInstitutionResponse buildStudentInstitutionResponse(StudentInstitution studentInstitution,
+    public StudentInstitutionResponse buildStudentInstitutionResponse(StudentInstitution studentInstitution,
                                                                        StudentResponse responseStudent,
                                                                        InstitutionResponse responseInstitution) {
         return StudentInstitutionResponse.builder()
