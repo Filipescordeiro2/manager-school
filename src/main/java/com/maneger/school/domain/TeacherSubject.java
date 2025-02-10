@@ -1,6 +1,5 @@
 package com.maneger.school.domain;
 
-import com.maneger.school.dto.request.StudentInstitutionRequest;
 import com.maneger.school.dto.request.TeacherSubjectRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

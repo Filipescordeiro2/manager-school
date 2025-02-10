@@ -3,11 +3,10 @@ package com.maneger.school.controller;
 import com.maneger.school.dto.request.LoginRequest;
 import com.maneger.school.dto.request.StudentRequest;
 import com.maneger.school.dto.request.TeacherRequest;
-import com.maneger.school.dto.response.LoginAlunoResponse;
-import com.maneger.school.dto.response.LoginTeacherResponse;
-import com.maneger.school.dto.response.StudentResponse;
-import com.maneger.school.dto.response.TeacherResponse;
+import com.maneger.school.dto.request.TeacherSubjectRequest;
+import com.maneger.school.dto.response.*;
 import com.maneger.school.service.TeacherService;
+import com.maneger.school.service.TeacherSubjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 public class TeacherController {
 
     private final TeacherService teacherService;
+    private final TeacherSubjectService teacherSubjectService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -41,5 +41,11 @@ public class TeacherController {
     @ResponseStatus(HttpStatus.OK)
     public TeacherResponse DisabledAcessStudant (@PathVariable String cpf){
         return teacherService.DisabledAcessteacher(cpf);
+    }
+
+    @PostMapping("/link")
+    @ResponseStatus(HttpStatus.CREATED)
+    public TeacherSubjectResponse createLink(@RequestBody TeacherSubjectRequest request){
+        return teacherSubjectService.createLink(request);
     }
 }

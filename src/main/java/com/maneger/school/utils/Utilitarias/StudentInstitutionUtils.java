@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -31,4 +32,25 @@ public class StudentInstitutionUtils {
                 .status(studentInstitution.isRegistration())
                 .build();
     }
+
+    public List<InstitutionResponse> mapStudentInstitutions(List<StudentInstitution> studentInstitutions) {
+        return studentInstitutions.stream()
+                .filter(StudentInstitution ::isRegistration)
+                .map(si -> {
+                    var institution = si.getInstitution();
+                    return InstitutionResponse.builder()
+                            .nameInstitution(institution.getNameInstitution())
+                            .cnpj(institution.getCnpj())
+                            .cellPhone(institution.getCellPhone())
+                            .email(institution.getEmail())
+                            .creatAt(institution.getCreatAt())
+                            .uptdateAt(institution.getUptdateAt())
+                            .typeOfInstitution(institution.getTypeOfInstitution())
+                            .status(institution.isStatus())
+                            .build();
+                })
+                .toList();
+    }
+
+
 }

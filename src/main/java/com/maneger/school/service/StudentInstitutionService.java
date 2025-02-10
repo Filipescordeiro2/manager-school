@@ -2,14 +2,20 @@ package com.maneger.school.service;
 
 import com.maneger.school.domain.StudentInstitution;
 import com.maneger.school.dto.request.StudentInstitutionRequest;
+import com.maneger.school.dto.response.InstitutionResponse;
 import com.maneger.school.dto.response.StudentInstitutionResponse;
+import com.maneger.school.exception.InstitutionException;
 import com.maneger.school.exception.StudantException;
 import com.maneger.school.exception.StudentInstitutionException;
+import com.maneger.school.repository.InstitutionRepository;
 import com.maneger.school.repository.StudentInstitutionRepository;
 import com.maneger.school.repository.StudentRepository;
 import com.maneger.school.utils.Utilitarias.StudentInstitutionUtils;
+import com.maneger.school.utils.Validation.StudentInstitutionValidation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -18,10 +24,11 @@ public class StudentInstitutionService {
     private final StudentInstitutionRepository studentInstitutionRepository;
     private final StudentRepository studentRepository;
     private final StudentInstitutionUtils studentInstitutionUtils;
+    private final StudentInstitutionValidation validation;
 
     public StudentInstitutionResponse createLink(StudentInstitutionRequest request){
         try{
-            validStatus(request.getStudentCPF());
+            validation.validStudentInstitution(request);
             var link = new StudentInstitution(request);
             var linkCreated = studentInstitutionRepository.save(link);
             return studentInstitutionUtils.ConvertStudentInstitutionResponse(linkCreated);
@@ -30,11 +37,16 @@ public class StudentInstitutionService {
         }
     }
 
-    private void validStatus(String cpf){
-      var student =  studentRepository.findByCpf(cpf).orElseThrow(()->new RuntimeException("Student not Found"));
-      if (!student.isStatus()){
-          throw new StudantException("Student is Blocked");
-      }
+    public List<InstitutionResponse> findAllStudentInstitution(String cpf) {
+        var student = studentRepository.findByCpf(cpf)
+                .orElseThrow(() -> new StudantException("Student not found"));
+        var studentInstitutions = studentInstitutionRepository.findByStudent(student);
+        if (studentInstitutions.isEmpty()) {
+            throw new InstitutionException("No institutions found for this student");
+        }
+        return studentInstitutionUtils.mapStudentInstitutions(studentInstitutions);
     }
+
+
 
 }
