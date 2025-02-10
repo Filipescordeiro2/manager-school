@@ -5,11 +5,9 @@ import com.maneger.school.dto.request.TeacherSubjectRequest;
 import com.maneger.school.dto.response.TeacherSubjectResponse;
 import com.maneger.school.exception.StudantException;
 import com.maneger.school.exception.TeacherException;
-import com.maneger.school.repository.InstitutionRepository;
-import com.maneger.school.repository.SchoolSubjectRepository;
-import com.maneger.school.repository.TeacherRepository;
 import com.maneger.school.repository.TeacherSubjectRepository;
 import com.maneger.school.utils.Utilitarias.TeacherSubjectUtils;
+import com.maneger.school.utils.Validation.TeacherSubjectValidation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,14 +16,12 @@ import org.springframework.stereotype.Service;
 public class TeacherSubjectService {
 
     private final TeacherSubjectRepository teacherSubjectRepository;
-    private final TeacherRepository teacherRepository;
     private final TeacherSubjectUtils teacherSubjectUtils;
-    private final InstitutionRepository institutionRepository;
-    private final SchoolSubjectRepository schoolSubjectRepository;
+    private final TeacherSubjectValidation validation;
 
     public TeacherSubjectResponse createLink(TeacherSubjectRequest request){
         try{
-            validStatus(request.getTeacherCPF());
+           validation.validTeacherSubject(request);
             var link = new TeacherSubject(request);
             var linkCreated = teacherSubjectRepository.save(link);
             return teacherSubjectUtils.convertToTeacherSubjectResponse(linkCreated);
@@ -36,10 +32,4 @@ public class TeacherSubjectService {
         }
     }
 
-    private void validStatus(String cpf){
-        var teacher =  teacherRepository.findByTeacherCpf(cpf).orElseThrow(()->new RuntimeException("Teacher not Found"));
-        if (!teacher.isStatus()){
-            throw new TeacherException("Teacher is Blocked");
-        }
-    }
 }
