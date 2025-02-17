@@ -5,5 +5,5 @@ public enum TypeUser {
     Student,
     Teacher,
     Responsible,
-    Admin
+    Secretary
 }
