@@ -26,7 +26,6 @@ public class StudentUtils {
             log.error("The user is deactivated -- Reason: " + studentEntity.getReasonsForBlockingDescription() + " -- Contact the Admin");
             throw new LoginException("User blocked");
         }
-
         studentEntity.setLoginAttempts(0);
         studentRepository.save(studentEntity);
 
