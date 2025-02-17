@@ -7,6 +7,7 @@ import com.maneger.school.dto.response.SecretaryResponse;
 import com.maneger.school.exception.SecretaryException;
 import com.maneger.school.repository.SecretaryRepository;
 import com.maneger.school.utils.Utilitarias.SecretaryUtils;
+import com.maneger.school.utils.Validation.SecretaryValidation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,11 +19,13 @@ public class SecretaryService {
 
     private final SecretaryUtils utils;
     private final SecretaryRepository secretaryRepository;
+    private final SecretaryValidation validation;
 
     public SecretaryResponse saveSecretary(SecretaryRequest request){
         log.info("Start of service [saveSecretary] -- Body request: " + request);
         try{
             var secretary = new Secretary(request);
+            validation.validatesecretary(secretary);
             var secretarySaved = secretaryRepository.save(secretary);
             var response = utils.convertToSecretaryResponse(secretarySaved);
             log.info("Created Secretary -- response: " + response);
@@ -33,7 +36,7 @@ public class SecretaryService {
 
         }catch (Exception e){
             log.error("Error created Secretary: " + e.getMessage());
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.getMessage());
         }
     }
 
