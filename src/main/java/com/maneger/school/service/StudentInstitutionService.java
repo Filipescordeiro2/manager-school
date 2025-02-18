@@ -7,7 +7,6 @@ import com.maneger.school.dto.response.StudentInstitutionResponse;
 import com.maneger.school.exception.InstitutionException;
 import com.maneger.school.exception.StudantException;
 import com.maneger.school.exception.StudentInstitutionException;
-import com.maneger.school.repository.InstitutionRepository;
 import com.maneger.school.repository.StudentInstitutionRepository;
 import com.maneger.school.repository.StudentRepository;
 import com.maneger.school.utils.Utilitarias.StudentInstitutionUtils;
