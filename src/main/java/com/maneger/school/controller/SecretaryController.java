@@ -4,6 +4,7 @@ import com.maneger.school.dto.request.SecretaryRequest;
 import com.maneger.school.dto.request.SecretarytInstitutionRequest;
 import com.maneger.school.dto.response.SecretaryResponse;
 import com.maneger.school.dto.response.SecretarytInstitutionResponse;
+import com.maneger.school.dto.response.StudentResponse;
 import com.maneger.school.service.SecretaryInstitutionService;
 import com.maneger.school.service.SecretaryService;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,17 @@ public class SecretaryController {
         return secretaryInstitutionService.createLink(request);
     }
 
+    @PostMapping("/activate/{cpf}")
+    @ResponseStatus(HttpStatus.OK)
+    public SecretaryResponse ActivateAcessStudant (@PathVariable String cpf){
+        return secretaryService.ActivateAcessStudant(cpf);
+    }
+
+    @PostMapping("/disabled/{cpf}")
+    @ResponseStatus(HttpStatus.OK)
+    public SecretaryResponse DisabledAcessStudant (@PathVariable String cpf){
+        return secretaryService.DisabledAcessStudant(cpf);
+    }
 
 
 }
