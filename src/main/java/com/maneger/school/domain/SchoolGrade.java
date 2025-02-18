@@ -29,6 +29,10 @@ public class SchoolGrade {
     @JoinColumn(name = "teacherSubject_id")
     private TeacherSubject teacherSubject;
 
+    private String dayOfClassroom;
+    private String startTime;
+    private String endTime;
+
     private LocalDateTime createAt;
     private LocalDateTime updateAt;
     private boolean status;
@@ -51,6 +55,10 @@ public class SchoolGrade {
 
         this.teacherSubject = new TeacherSubject();
         this.teacherSubject.setId(request.getTeacherSubjectId());
+
+        this.startTime = request.getStartTime();
+        this.endTime = request.getEndTime();
+        this.dayOfClassroom = request.getDayOfClassroom();
 
     }
 }

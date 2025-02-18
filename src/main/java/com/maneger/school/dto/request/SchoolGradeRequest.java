@@ -13,5 +13,8 @@ public class SchoolGradeRequest {
 
     private UUID teacherSubjectId;
     private String schoolClassName;
+    private String dayOfClassroom;
+    private String startTime;
+    private String endTime;
 
 }

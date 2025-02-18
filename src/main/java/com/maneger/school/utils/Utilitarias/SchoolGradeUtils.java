@@ -26,6 +26,9 @@ public class SchoolGradeUtils {
                 .createAt(schoolGrade.getCreateAt())
                 .updateAt(schoolGrade.getUpdateAt())
                 .status(schoolGrade.isStatus())
+                .dayOfClassroom(schoolGrade.getDayOfClassroom())
+                .endTime(schoolGrade.getEndTime())
+                .startTime(schoolGrade.getStartTime())
                 .build();
     }
 

@@ -5,6 +5,7 @@ import com.maneger.school.dto.request.SchoolGradeRequest;
 import com.maneger.school.dto.response.GradeResponse;
 import com.maneger.school.dto.response.SchoolGradeResponse;
 import com.maneger.school.exception.SchoolGradeException;
+import com.maneger.school.repository.SchoolClassRepository;
 import com.maneger.school.repository.SchoolGradeRepository;
 import com.maneger.school.utils.Utilitarias.SchoolGradeUtils;
 import com.maneger.school.utils.Validation.SchoolGradeValidation;
@@ -26,12 +27,17 @@ public class SchoolGradeService {
     public SchoolGradeResponse save(SchoolGradeRequest request) {
         try {
             var grade = new SchoolGrade(request);
+            schoolGradeValidation.validDays(request);
             var gradeSaved = schoolGradeUtils.saveSchoolGrade(grade);
             return schoolGradeUtils.convertToSchoolGradeResponse(gradeSaved);
+        }catch (SchoolGradeException e){
+            throw new SchoolGradeException(e.getMessage());
         }catch (Exception e){
             throw new SchoolGradeException("Error saved School Grade: "+e.getMessage());
         }
     }
+
+
 
     @Transactional(readOnly = true)
     public List<GradeResponse> findGradeDetails(String className) {
