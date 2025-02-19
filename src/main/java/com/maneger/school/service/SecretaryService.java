@@ -1,9 +1,12 @@
 package com.maneger.school.service;
 
 import com.maneger.school.domain.Secretary;
+import com.maneger.school.dto.request.LoginRequest;
 import com.maneger.school.dto.request.SecretaryRequest;
+import com.maneger.school.dto.response.LoginSecretaryResponse;
 import com.maneger.school.dto.response.SecretaryResponse;
 import com.maneger.school.enums.ReasonsForBlocking;
+import com.maneger.school.exception.LoginException;
 import com.maneger.school.exception.SecretaryException;
 import com.maneger.school.exception.StudantException;
 import com.maneger.school.repository.SecretaryInstitutionRepository;
@@ -36,10 +39,25 @@ public class SecretaryService {
         }catch (SecretaryException e){
             log.error("Error in validate Secretary: " + e.getMessage());
             throw new SecretaryException(e.getMessage());
-
         }catch (Exception e){
             log.error("Error created Secretary: " + e.getMessage());
             throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    public LoginSecretaryResponse loginSecretary(LoginRequest request) {
+        log.info("Start of service [loginStudant] -- Body request: " + request);
+        try {
+            var response = utils.authenticateAndBuildResponse(request);
+            log.info("Login successful -- response: " + response);
+            return response;
+        } catch (LoginException e) {
+            log.error("Login failed: " + e.getMessage());
+            utils.handleFailedLoginAttempt(request);
+            throw new LoginException(e.getMessage());
+        } catch (Exception e) {
+            log.error("Error during login: " + e.getMessage());
+            throw new RuntimeException("Error Login: " + e.getMessage());
         }
     }
 

@@ -19,7 +19,7 @@ public class SchoolClass {
     @Id
     private String nameClass;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "institution_cnpj", referencedColumnName = "cnpj")
     private Institution institution;
 

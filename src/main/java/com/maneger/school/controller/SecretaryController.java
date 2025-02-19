@@ -1,15 +1,16 @@
 package com.maneger.school.controller;
 
+import com.maneger.school.dto.request.LoginRequest;
 import com.maneger.school.dto.request.SecretaryRequest;
 import com.maneger.school.dto.request.SecretarytInstitutionRequest;
-import com.maneger.school.dto.response.SecretaryResponse;
-import com.maneger.school.dto.response.SecretarytInstitutionResponse;
-import com.maneger.school.dto.response.StudentResponse;
+import com.maneger.school.dto.response.*;
 import com.maneger.school.service.SecretaryInstitutionService;
 import com.maneger.school.service.SecretaryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/secretary")
@@ -43,5 +44,13 @@ public class SecretaryController {
         return secretaryService.DisabledAcessStudant(cpf);
     }
 
-
+    @PostMapping("/login")
+    @ResponseStatus(HttpStatus.OK)
+    public LoginSecretaryResponse login(@RequestBody LoginRequest request){
+        return secretaryService.loginSecretary(request);
+    }
+    @GetMapping("/institution/{cpf}")
+    public List<InstitutionResponse> getStudentInstitutions(@PathVariable String cpf) {
+        return secretaryInstitutionService.findAllSecretaryInstitution(cpf);
+    }
 }

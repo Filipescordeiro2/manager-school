@@ -16,9 +16,20 @@ public class TeacherSubjectUtils {
                 .institutionCnpj(teacherSubject.getInstitution().getCnpj())
                 .teacherCpf(teacherSubject.getTeacher().getTeacherCpf())
                 .schoolSubjectName(teacherSubject.getSchoolSubject().getNameSubject())
-                .startDate(teacherSubject.getStartDate())
+                .startDate(teacherSubject.getCreateAt())
                 .uptdateAt(teacherSubject.getUptdateAt())
                 .bond(teacherSubject.isBond())
+                .build();
+    }
+
+    public TeacherSubjectDetailsResponse convertToTeacherSubjectDetaisResponse(TeacherSubjectDetailsResponse teacherSubjectDetailsResponse) {
+        return TeacherSubjectDetailsResponse.builder()
+                .nameInstitution(teacherSubjectDetailsResponse.getNameInstitution())
+                .nameTeacher(teacherSubjectDetailsResponse.getNameTeacher())
+                .schoolSubjectName(teacherSubjectDetailsResponse.getSchoolSubjectName())
+                .createAt(teacherSubjectDetailsResponse.getCreateAt())
+                .uptdateAt(teacherSubjectDetailsResponse.getUptdateAt())
+                .bond(teacherSubjectDetailsResponse.isBond())
                 .build();
     }
 }

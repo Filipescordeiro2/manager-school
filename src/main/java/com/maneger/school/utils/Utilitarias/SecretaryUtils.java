@@ -3,6 +3,8 @@ package com.maneger.school.utils.Utilitarias;
 import com.maneger.school.domain.Secretary;
 import com.maneger.school.domain.Student;
 import com.maneger.school.dto.request.LoginRequest;
+import com.maneger.school.dto.response.LoginAlunoResponse;
+import com.maneger.school.dto.response.LoginSecretaryResponse;
 import com.maneger.school.dto.response.SecretaryResponse;
 import com.maneger.school.dto.response.StudentResponse;
 import com.maneger.school.enums.ReasonsForBlocking;
@@ -18,6 +20,23 @@ import org.springframework.stereotype.Component;
 public class SecretaryUtils{
 
     private final SecretaryRepository secretaryRepository;
+
+    public LoginSecretaryResponse authenticateAndBuildResponse(LoginRequest request) {
+        var studentEntity = secretaryRepository.findByUserAccessAndPasswordAccess(request.getUserAccess(), request.getPasswordAccess())
+                .orElseThrow(() -> new LoginException("User or Password is incorrect"));
+
+        if (!studentEntity.isStatus()) {
+            log.error("The user is deactivated -- Reason: " + studentEntity.getReasonsForBlockingDescription() + " -- Contact the Admin");
+            throw new LoginException("User blocked");
+        }
+        studentEntity.setLoginAttempts(0);
+        secretaryRepository.save(studentEntity);
+        var studentResponse = convertToSecretaryResponse(studentEntity);
+        return LoginSecretaryResponse.builder()
+                .message("Login successfully")
+                .secretaryResponse(studentResponse)
+                .build();
+    }
 
     public SecretaryResponse convertToSecretaryResponse(Secretary secretary) {
         return SecretaryResponse.builder()
