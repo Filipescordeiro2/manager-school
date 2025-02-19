@@ -1,6 +1,7 @@
 package com.maneger.school.utils.Validation;
 
 import com.maneger.school.dto.request.StudentInstitutionRequest;
+import com.maneger.school.dto.request.TeacherInstitutionRequest;
 import com.maneger.school.dto.request.TeacherSubjectRequest;
 import com.maneger.school.exception.InstitutionException;
 import com.maneger.school.exception.SchoolSubjectException;
@@ -8,6 +9,7 @@ import com.maneger.school.exception.StudantException;
 import com.maneger.school.exception.TeacherException;
 import com.maneger.school.repository.InstitutionRepository;
 import com.maneger.school.repository.SchoolSubjectRepository;
+import com.maneger.school.repository.TeacherInstitutionRepository;
 import com.maneger.school.repository.TeacherRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -26,6 +28,7 @@ public class TeacherSubjectValidation {
         validSchoolSubject(request.getNameSchoolSubject());
 
     }
+
 
     private void validInstitution(String cnpj){
         var institution = institutionRepository.findByCnpj(cnpj);

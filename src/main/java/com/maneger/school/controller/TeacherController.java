@@ -1,15 +1,16 @@
 package com.maneger.school.controller;
 
-import com.maneger.school.dto.request.LoginRequest;
-import com.maneger.school.dto.request.StudentRequest;
-import com.maneger.school.dto.request.TeacherRequest;
-import com.maneger.school.dto.request.TeacherSubjectRequest;
+import com.maneger.school.dto.request.*;
 import com.maneger.school.dto.response.*;
+import com.maneger.school.service.TeacherInstitutionService;
 import com.maneger.school.service.TeacherService;
 import com.maneger.school.service.TeacherSubjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/teacher")
@@ -18,6 +19,7 @@ public class TeacherController {
 
     private final TeacherService teacherService;
     private final TeacherSubjectService teacherSubjectService;
+    private final TeacherInstitutionService teacherInstitutionService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -47,5 +49,16 @@ public class TeacherController {
     @ResponseStatus(HttpStatus.CREATED)
     public TeacherSubjectResponse createLink(@RequestBody TeacherSubjectRequest request){
         return teacherSubjectService.createLink(request);
+    }
+
+    @PostMapping("/link/institution")
+    @ResponseStatus(HttpStatus.CREATED)
+    public TeacherInstitutionResponse createLinkForIntitution(@RequestBody TeacherInstitutionRequest request){
+        return teacherInstitutionService.createLink(request);
+    }
+
+    @GetMapping("/institution/{cpf}")
+    public List<InstitutionResponse> getTeacherInstitutions(@PathVariable String cpf) {
+        return teacherInstitutionService.findAllTeacherInstitution(cpf);
     }
 }

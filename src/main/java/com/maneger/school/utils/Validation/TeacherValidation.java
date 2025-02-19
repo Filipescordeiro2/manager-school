@@ -1,5 +1,6 @@
 package com.maneger.school.utils.Validation;
 
+import com.maneger.school.exception.StudantException;
 import com.maneger.school.exception.TeacherException;
 import com.maneger.school.repository.TeacherRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,12 @@ public class TeacherValidation {
         var studentByEmail = repository.findByEmail(email);
         if (studentByEmail.isPresent()) {
             throw new TeacherException("There is already a registration for this Email");
+        }
+    }
+
+    public void validStatusForDisanble(boolean status){
+        if (!status){
+            throw new StudantException("Student is already deactivated");
         }
     }
 
