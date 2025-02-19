@@ -22,13 +22,13 @@ import java.time.Period;
 public class Secretary {
 
     @Id
-    @CPF
+    @CPF(message = "CPF is invalid")
     private String cpf;
 
     @Column(unique = true)
     private String userAccess ;
     private String passwordAccess;
-    @Email
+    @Email(message = "Email is invalid")
     @Column(unique = true)
     private String email;
     private String nameSecretary;

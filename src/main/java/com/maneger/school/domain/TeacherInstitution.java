@@ -1,6 +1,6 @@
 package com.maneger.school.domain;
 
-import com.maneger.school.dto.request.TeacherSubjectRequest;
+import com.maneger.school.dto.request.TeacherInstitutionRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,11 +10,11 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table
-@Data
-@AllArgsConstructor
+@Table(name = "teacher_institution")
 @NoArgsConstructor
-public class TeacherSubject {
+@AllArgsConstructor
+@Data
+public class TeacherInstitution {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,22 +25,18 @@ public class TeacherSubject {
     private Teacher teacher;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "institution_cnpj")
+    @JoinColumn(name = "institution_cnpj", referencedColumnName = "cnpj")
     private Institution institution;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "schoolSubject_name")
-    private SchoolSubject schoolSubject;
-
-    private LocalDateTime createAt;
+    private LocalDateTime startDate;
     private LocalDateTime uptdateAt;
-    private boolean bond;
+    private boolean registration;
 
     @PrePersist
     public void prePersist() {
-        this.createAt = LocalDateTime.now();
+        this.startDate = LocalDateTime.now();
         this.uptdateAt = LocalDateTime.now();
-        this.bond = true;
+        this.registration = true;
     }
 
     @PreUpdate
@@ -48,15 +44,10 @@ public class TeacherSubject {
         this.uptdateAt = LocalDateTime.now();
     }
 
-    public TeacherSubject(TeacherSubjectRequest request) {
+    public TeacherInstitution(TeacherInstitutionRequest request) {
         this.teacher = new Teacher();
         this.teacher.setTeacherCpf(request.getTeacherCPF());
-
         this.institution = new Institution();
         this.institution.setCnpj(request.getInstitutionCNPJ());
-
-        this.schoolSubject = new SchoolSubject();
-        this.schoolSubject.setNameSubject(request.getNameSchoolSubject());
     }
-
 }

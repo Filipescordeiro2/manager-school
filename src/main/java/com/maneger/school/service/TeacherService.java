@@ -9,7 +9,9 @@ import com.maneger.school.enums.ReasonsForBlocking;
 import com.maneger.school.exception.LoginException;
 import com.maneger.school.exception.TeacherException;
 import com.maneger.school.repository.TeacherRepository;
+import com.maneger.school.repository.TeacherSubjectRepository;
 import com.maneger.school.utils.Utilitarias.TeacherUtils;
+import com.maneger.school.utils.Validation.TeacherValidation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,8 @@ public class TeacherService {
 
     private final TeacherUtils teacherUtils;
     private final TeacherRepository teacherRepository;
+    private final TeacherSubjectRepository teacherSubjectRepository;
+    private final TeacherValidation teacherValidation;
 
     public TeacherResponse saveTeacher(TeacherRequest request) {
         log.info("Start of service [saveTeacher] -- Body request: " + request);
@@ -87,12 +91,18 @@ public class TeacherService {
     public TeacherResponse DisabledAcessteacher(String cpf) {
         try{
             var teacher = teacherUtils.findTeacherByCpf(cpf);
+            var teacherSubjects = teacherSubjectRepository.findByTeacher(teacher);
+            teacherValidation.validStatusForDisanble(teacher.isStatus());
             if (teacher.isStatus()) {
                 teacher.setStatus(false);
                 teacher.setReasonsForBlocking(ReasonsForBlocking.BLOCKED_2);
                 teacher.setReasonsForBlockingDescription(ReasonsForBlocking.BLOCKED_2.getDescription());
                 teacher.setLoginAttempts(0);
                 log.info("Disabled Teacher Access");
+                teacherSubjects.forEach(teacherSubject -> {
+                    teacherSubject.setBond(false);
+                    teacherSubjectRepository.save(teacherSubject);
+                });
             }
             var teacherSaved = teacherRepository.save(teacher);
             return teacherUtils.convertToTeacherResponse(teacherSaved);
