@@ -7,14 +7,10 @@ import lombok.NoArgsConstructor;
 import java.util.UUID;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class SchoolGradeRequest {
+@AllArgsConstructor
+public class StudentClassRequest {
 
-    private UUID teacherSubjectId;
+    private String studentCPF;
     private UUID schoolClassId;
-    private String dayOfClassroom;
-    private String startTime;
-    private String endTime;
-
 }

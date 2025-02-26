@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @AllArgsConstructor
@@ -17,6 +18,9 @@ import java.util.List;
 public class SchoolClass {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
+
     private String nameClass;
 
     @ManyToOne
@@ -25,6 +29,8 @@ public class SchoolClass {
 
     private String dradeOfSchedules;
     private String period;
+    private String yearOfSemester;
+    private String semester;
     private String startTime;
     private String endTime;
 
@@ -53,6 +59,8 @@ public class SchoolClass {
         this.period = request.getPeriod();
         this.startTime = request.getStartTime();
         this.endTime = request.getEndTime();
+        this.semester = request.getSemester();
+        this.yearOfSemester = request.getYearOfSemester();
 
         this.institution = new Institution();
         this.institution.setCnpj(request.getInstitutionCNPJ());
