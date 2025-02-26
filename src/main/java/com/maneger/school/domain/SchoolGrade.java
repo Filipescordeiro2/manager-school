@@ -51,7 +51,7 @@ public class SchoolGrade {
 
     public SchoolGrade(SchoolGradeRequest request) {
         this.schoolClass = new SchoolClass();
-        this.schoolClass.setNameClass(request.getSchoolClassName());
+        this.schoolClass.setId(request.getSchoolClassId());
 
         this.teacherSubject = new TeacherSubject();
         this.teacherSubject.setId(request.getTeacherSubjectId());
