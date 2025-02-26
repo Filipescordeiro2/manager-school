@@ -21,6 +21,8 @@ public class SchoolClassUtils {
         return SchoolClassResponse.builder()
                 .nameClass(schoolClass.getNameClass())
                 .institutionCnpj(schoolClass.getInstitution().getCnpj())
+                .yearOfSemester(schoolClass.getYearOfSemester())
+                .semester(schoolClass.getSemester())
                 .createAt(schoolClass.getCreateAt())
                 .updateAt(schoolClass.getUpdateAt())
                 .dradeOfSchedules(schoolClass.getDradeOfSchedules())

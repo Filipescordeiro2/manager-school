@@ -16,6 +16,18 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(BulletinException.class)
+    public ResponseEntity<ResponseExecption> handleBulletinException(BulletinException ex, WebRequest request) {
+        ResponseExecption response = new ResponseExecption(ex.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(StudentClassException.class)
+    public ResponseEntity<ResponseExecption> handleStudentClassException(StudentClassException ex, WebRequest request) {
+        ResponseExecption response = new ResponseExecption(ex.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(InstitutionException.class)
     public ResponseEntity<ResponseExecption> handleInstitutionException(InstitutionException ex, WebRequest request) {
         ResponseExecption response = new ResponseExecption(ex.getMessage());

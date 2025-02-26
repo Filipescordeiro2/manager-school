@@ -19,7 +19,7 @@ public class InstitutionValidation {
         validateDuplicateInstitution(request.getNameInstitution());
     }
 
-    public void validStatusForDisanble(boolean status){
+    public void validStatusForDisable(boolean status){
         if (!status){
             throw new InstitutionException("Institution is already deactivated");
         }

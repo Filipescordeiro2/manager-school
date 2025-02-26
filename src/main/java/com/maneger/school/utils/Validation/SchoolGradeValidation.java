@@ -16,7 +16,7 @@ public class SchoolGradeValidation {
 
 
     public void validDays(SchoolGradeRequest request) {
-        var schoolClass = schoolClassRepository.findById(request.getSchoolClassName())
+        var schoolClass = schoolClassRepository.findById(request.getSchoolClassId())
                 .orElseThrow(() -> new SchoolGradeException("School class not found"));
         String daysOfSchedules = schoolClass.getDradeOfSchedules();
         String dayOfClassroom = request.getDayOfClassroom();

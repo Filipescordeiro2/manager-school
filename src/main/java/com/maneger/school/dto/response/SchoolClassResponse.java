@@ -8,6 +8,8 @@ import java.time.LocalDateTime;
 public record SchoolClassResponse(String nameClass,
                                   String dradeOfSchedules,
                                   String period,
+                                  String yearOfSemester,
+                                  String semester,
                                   String startDate,
                                   String endDate,
                                   LocalDateTime createAt,
