@@ -48,8 +48,13 @@ public class Student {
     private String reasonsForBlockingDescription;
     private boolean status;
 
+    /*
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<StudentInstitution> studentInstitutions;
+
+
+     */
+
 
     @PrePersist
     public void prePersist(){

@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/institution")
 @RequiredArgsConstructor
@@ -30,6 +32,7 @@ public class InstitutionController {
     @PostMapping("/disabled/{cnpj}")
     @ResponseStatus(HttpStatus.OK)
     public InstitutionResponse DisabledAcessIntitution(@PathVariable String cnpj){
-        return institutionService.DisabledAcessIntitution(cnpj);
+        return institutionService.disableAccessInstitution(cnpj);
     }
+
 }
