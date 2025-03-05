@@ -1,4 +1,4 @@
-# Gerenciador Escolar
+# School Manager
 
 ## Descrição
 Gerenciador Escolar é uma aplicação Spring Boot projetada para gerenciar dados relacionados à escola, incluindo professores, disciplinas e instituições.
