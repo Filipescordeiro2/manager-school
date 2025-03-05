@@ -24,6 +24,7 @@ public class StudentInstitutionUtils {
      public StudentInstitutionResponse ConvertStudentInstitutionResponse(StudentInstitution studentInstitution) {
         return StudentInstitutionResponse
                 .builder()
+                .id(studentInstitution.getId())
                 .institutionCnpj(studentInstitution.getInstitution().getCnpj())
                 .studentCpf(studentInstitution.getStudent().getCpf())
                 .course(studentInstitution.getCourse())

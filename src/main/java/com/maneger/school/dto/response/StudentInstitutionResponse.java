@@ -4,9 +4,11 @@ import lombok.Builder;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Builder
-public record StudentInstitutionResponse(String studentCpf,
+public record StudentInstitutionResponse(UUID id,
+                                         String studentCpf,
                                          String institutionCnpj,
                                          LocalDateTime startDate,
                                          LocalDateTime uptdateAt,

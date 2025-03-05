@@ -14,9 +14,6 @@ import com.maneger.school.utils.Validation.TeacherInstitutionValidation;
 import com.maneger.school.utils.Validation.TeacherSubjectValidation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -41,6 +38,5 @@ public class TeacherSubjectService {
             throw new RuntimeException("Error for link "+e.getMessage());
         }
     }
-
 
 }

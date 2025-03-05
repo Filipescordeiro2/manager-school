@@ -21,6 +21,7 @@ public class SchoolGradeUtils {
 
     public SchoolGradeResponse convertToSchoolGradeResponse(SchoolGrade schoolGrade) {
         return SchoolGradeResponse.builder()
+                .id(schoolGrade.getId())
                 .schoolClassName(schoolGrade.getSchoolClass().getNameClass())
                 .teacherSubjecName(schoolGrade.getTeacherSubject().getId().toString())
                 .createAt(schoolGrade.getCreateAt())

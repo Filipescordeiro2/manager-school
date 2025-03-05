@@ -11,6 +11,7 @@ public record BulletinResponse(
         UUID studentClassId,
         UUID teacherSubjectId,
         Double noteValue,
+        String situation,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {}
