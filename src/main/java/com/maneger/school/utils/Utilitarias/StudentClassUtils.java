@@ -16,6 +16,7 @@ public class StudentClassUtils {
     public StudentClassResponse ConvertStudentClassResponse(StudentClass studentClass) {
         return StudentClassResponse
                 .builder()
+                .id(studentClass.getId())
                 .message("Student registered in class")
                 .createAt(LocalDateTime.now())
                 .build();

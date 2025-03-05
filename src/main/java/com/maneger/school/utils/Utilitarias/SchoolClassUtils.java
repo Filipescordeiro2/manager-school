@@ -19,6 +19,7 @@ public class SchoolClassUtils {
 
     public SchoolClassResponse ConvertSchoolClassResponse(SchoolClass schoolClass) {
         return SchoolClassResponse.builder()
+                .id(schoolClass.getId())
                 .nameClass(schoolClass.getNameClass())
                 .institutionCnpj(schoolClass.getInstitution().getCnpj())
                 .yearOfSemester(schoolClass.getYearOfSemester())

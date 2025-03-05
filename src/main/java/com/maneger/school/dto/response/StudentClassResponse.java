@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Builder
-public record StudentClassResponse(String message,
+public record StudentClassResponse(UUID id,
+                                    String message,
                                    LocalDateTime createAt) {
 }

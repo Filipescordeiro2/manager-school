@@ -14,6 +14,7 @@ public class TeacherInstitutionUtils {
     public TeacherInstitutionResponse ConvertTeacherInstitutionResponse(TeacherInstitution teacherInstitution) {
         return TeacherInstitutionResponse
                 .builder()
+                .id(teacherInstitution.getId())
                 .institutionCnpj(teacherInstitution.getInstitution().getCnpj())
                 .teacherCpf(teacherInstitution.getTeacher().getTeacherCpf())
                 .startDate(teacherInstitution.getStartDate())

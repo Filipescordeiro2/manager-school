@@ -13,6 +13,7 @@ public class TeacherSubjectUtils {
     public TeacherSubjectResponse convertToTeacherSubjectResponse(TeacherSubject teacherSubject) {
         return TeacherSubjectResponse.builder()
                 .message("Link created successfully")
+                .id(teacherSubject.getId())
                 .institutionCnpj(teacherSubject.getInstitution().getCnpj())
                 .teacherCpf(teacherSubject.getTeacher().getTeacherCpf())
                 .schoolSubjectName(teacherSubject.getSchoolSubject().getNameSubject())

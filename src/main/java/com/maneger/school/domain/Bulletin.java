@@ -1,6 +1,7 @@
 package com.maneger.school.domain;
 
 import com.maneger.school.dto.request.BulletinRequest;
+import com.maneger.school.utils.Utilitarias.BulletinUtils;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,6 +32,7 @@ public class Bulletin {
 
     private Double noteValue;
 
+    private String situation;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -53,5 +55,6 @@ public class Bulletin {
         this.teacherSubject.setId(request.getTeacherSubjectId());
 
         this.noteValue = request.getNoteValue();
+        this.situation = BulletinUtils.validNoteValue(request.getNoteValue());
     }
 }
